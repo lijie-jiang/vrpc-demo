@@ -1,0 +1,17 @@
+TARGET = vrpc-foo-agent
+CPPFLAGS = -I. -pthread -fPIC -m64 -O3 -std=c++14
+LDFLAGS = -pthread
+LDLIBS =
+
+SRCS := $(shell find ./foo -name "*.cc")
+OBJS := $(addsuffix .o,$(basename $(SRCS)))
+DEPS := $(OBJS:.o=.d)
+
+$(TARGET): $(OBJS)
+	$(CXX) $(LDFLAGS) $(OBJS) -o $@ $(LOADLIBES) $(LDLIBS)
+
+.PHONY: clean
+clean:
+	$(RM) $(TARGET) $(OBJS) $(DEPS)
+
+-include $(DEPS)
